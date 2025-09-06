@@ -18,26 +18,31 @@ if(!API_KEY){
  console.error("API KEY NOT FOUND");
 }
 
-const ENDPOINT_URL = 'https://api.quiverquant.com/beta/live/congresstrading';
-
-async function main(){
-  const response = await axios.get<CongressTrade[]>(ENDPOINT_URL,{
-    header: {
-     'Accept': 'application/json',
-     'Authorization': `Bearer ${API_KEY}`
-    }
-  });
-  
-  const trades = response.data;
-
-  trades.slice(0, 5).forEach((trade, i) => {
-      console.log(`#${i + 1}: ${trade.Representative} (${trade.Party})`);
-      console.log(`   • ${trade.Transaction} of ${trade.Ticker}`);
-      console.log(`   • Amount: ${trade.Range}`);
-      console.log(`   • Date: ${trade.TransactionDate}`);
-      console.log('');
-    });
-
-    console.log(`📊 Fetched ${trades.length} trades total.`);
+const config = {
+  headers: {
+    'Accept': 'application/json',
+    'Authorization': `Bearer ${API_KEY}`
+  }
 }
-await main();
+
+const endpointUrl = 'https://api.quiverquant.com/beta/live/congresstrading';
+// API request
+async function fetchCongressTrades(){
+  try {
+   console.log(`Making request to: ${endpointUrl}`);
+   const response: AxiosResponse<any[]> = await axios.get(endpointUrl,config);
+
+   console.log("Success");
+   console.log("----------------")
+   console.log(response.data[0]);
+  } catch (error) {
+    console.error("Error fetching data");
+    if(axios.isAxiosError(error)){
+      console.log(`Status Code: ${error.response?.status}`);
+      console.log(`Error Message: ${error.response?.data || error.message}`);
+    } else {
+      console.log('An unexpeceted error occurred:', error);
+    }
+  }
+}
+fetchCongressTrades();

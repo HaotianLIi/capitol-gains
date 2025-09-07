@@ -26,7 +26,7 @@ export function getCommitteeMemberships(bioguideId: string) : Committee[] {
  * Return all committees of all members that they belong to via their bioguideId
  * @param bioguideIds[] must be all capitalized
  */
-export function getAllCommitteeMembershipsMany(...bioguideIds: string[]) : Record<string, Committee[]> {
+export function getCommitteeMembershipsMany(...bioguideIds: string[]) : Record<string, Committee[]> {
     const result = listToRecord(bioguideIds)
     Object.entries(result).forEach(([ k, _ ]) => result[k] = getCommitteeMemberships(k))
 

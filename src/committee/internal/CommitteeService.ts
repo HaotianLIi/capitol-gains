@@ -40,14 +40,17 @@ type CommitteeMembership = z.infer<typeof committeeMembershipSchema>
 type Committee = z.infer<typeof committeeSchema>
 type SubCommittee = z.infer<typeof subCommitteeSchema>
 
+const COMMITTEE_MEMBERSHIP_CURRENT_PATH = "congress-legislators/committee-membership-current.yaml"
+const COMMITTEE_CURRENT_PATH = "congress-legislators/committee-current.yaml"
+
 async function getCommitteeMembershipData() : Promise<CommitteeMembership> {
-    const data  = await Bun.file("congress-legislators/committee-membership-current.yaml").text()
+    const data  = await Bun.file(COMMITTEE_MEMBERSHIP_CURRENT_PATH).text()
     // @ts-ignore
     return committeeMembershipSchema.parse(Bun.YAML.parse(data))
 }
 
 async function getCommitteeData() : Promise<Committee[]> {
-    const data = await Bun.file("congress-legislators/committees-current.yaml").text()
+    const data = await Bun.file(COMMITTEE_CURRENT_PATH).text()
     // @ts-ignore
     return Bun.YAML.parse(data).map(committeeSchema.parse)
 }

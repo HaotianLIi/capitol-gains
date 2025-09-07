@@ -1,4 +1,4 @@
-# quiver-congress-tracker
+# Capitol-gainz
 
 To install dependencies:
 ```bash

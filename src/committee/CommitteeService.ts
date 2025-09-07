@@ -50,9 +50,22 @@ async function getCommitteeData() : Promise<Committee[]> {
     return Bun.YAML.parse(data).map(committeeSchema.parse)
 }
 
-async function getMembers(thomasId: string) : Promise<CommitteeMember[] | undefined> {
-    const data = await getCommitteeMembershipData()
-    return data[thomasId]
+const committeeData = await getCommitteeData()
+const committeeMembershipData = await getCommitteeMembershipData()
+
+function getMembers(committeeId: string) : CommitteeMember[] | undefined {
+    return committeeMembershipData[committeeId]
+}
+
+function getCommitteeMembership(bioguideId: string){
+    const isInCommittee = (c: CommitteeMember[] | undefined, bioguideId : string) => {
+        return !c ? false : c.filter(x => x.bioguide === bioguideId).length > 0
+    }
+
+    const thomasIds = Object.keys(committeeMembershipData)
+        .filter(x => isInCommittee(committeeMembershipData[x], bioguideId))
+
+    return committeeData.filter(x => thomasIds.includes(x.thomas_id))
 }
 
 export type {
@@ -63,5 +76,6 @@ export type {
 }
 
 export {
-    getMembers
+    getMembers,
+    getCommitteeMembership
 }

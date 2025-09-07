@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-interface CongressTrade{
+interface CongressTrade {
   Representativ: string;
   BioGuideID: string;
   ReportDate: string;
@@ -13,8 +12,8 @@ interface CongressTrade{
 }
 
 const API_KEY = Bun.env.QUIVER_API_KEY;
-if(!API_KEY){
- console.error("API KEY NOT FOUND");
+if (!API_KEY) {
+  console.error("API KEY NOT FOUND");
 }
 
 const config = {
@@ -25,36 +24,36 @@ const config = {
 }
 const endpointUrl = 'https://api.quiverquant.com/beta/live/congresstrading';
 // API request
-async function fetchCongressTrades(){
+async function fetchCongressTrades() {
   try {
-   console.log(`Making request to: ${endpointUrl}`);
-   const response: AxiosResponse<any[]> = await axios.get(endpointUrl,config);
+    console.log(`Making request to: ${endpointUrl}`);
+    const response = await axios.get<any[]>(endpointUrl, config);
 
-   const targetMonth = "2025-08";
-   const allTrades = response.data;
-   const monthlyTrades = allTrades.filter(trade => {
-	return trade.TransactionDate.startsWith(targetMonth);
-   });
-   console.log(`Found ${monthlyTrades.length} trades in ${targetMonth}`);
-   console.log("-----------------------------------");
-   // Get first 5
-   const firstFiveTrades = response.data.slice(0,50);
-   // Loop through each trade and print it
-   firstFiveTrades.forEach((trade, index) => {
-      console.log(`Trade #${index+1}:`);
+    const targetMonth = "2025-08";
+    const allTrades = response.data;
+    const monthlyTrades = allTrades.filter(trade => {
+      return trade.TransactionDate.startsWith(targetMonth);
+    });
+    console.log(`Found ${monthlyTrades.length} trades in ${targetMonth}`);
+    console.log("-----------------------------------");
+    // Get first 5
+    const firstFiveTrades = response.data.slice(0, 50);
+    // Loop through each trade and print it
+    firstFiveTrades.forEach((trade, index) => {
+      console.log(`Trade #${index + 1}:`);
       console.log(trade);
       console.log('---');
-   });
-   // // Total trade received
-   console.log(`Total trade: ${response.data.length}`);
-   
-   
+    });
+    // // Total trade received
+    console.log(`Total trade: ${response.data.length}`);
+
+
   } catch (error) {
     console.error("Error fetching data");
-    if(axios.isAxiosError(error)){
+    if (axios.isAxiosError(error)) {
       console.log(`Status Code: ${error.response?.status}`);
       console.log(`Error Message: ${error.response?.data || error.message}`);
-    }else{
+    } else {
       console.log("An unexpeceted error occurred: ", error);
     }
   }

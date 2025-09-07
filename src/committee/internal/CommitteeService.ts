@@ -42,40 +42,22 @@ type SubCommittee = z.infer<typeof subCommitteeSchema>
 
 async function getCommitteeMembershipData() : Promise<CommitteeMembership> {
     const data  = await Bun.file("congress-legislators/committee-membership-current.yaml").text()
+    // @ts-ignore
     return committeeMembershipSchema.parse(Bun.YAML.parse(data))
 }
 
 async function getCommitteeData() : Promise<Committee[]> {
     const data = await Bun.file("congress-legislators/committees-current.yaml").text()
+    // @ts-ignore
     return Bun.YAML.parse(data).map(committeeSchema.parse)
 }
 
-const committeeData = await getCommitteeData()
-const committeeMembershipData = await getCommitteeMembershipData()
-
-function getMembers(committeeId: string) : CommitteeMember[] | undefined {
-    return committeeMembershipData[committeeId]
-}
-
-function getCommitteeMembership(bioguideId: string){
-    const isInCommittee = (c: CommitteeMember[] | undefined, bioguideId : string) => {
-        return !c ? false : c.filter(x => x.bioguide === bioguideId).length > 0
-    }
-
-    const thomasIds = Object.keys(committeeMembershipData)
-        .filter(x => isInCommittee(committeeMembershipData[x], bioguideId))
-
-    return committeeData.filter(x => thomasIds.includes(x.thomas_id))
-}
+export const committeeData = await getCommitteeData()
+export const committeeMembershipData = await getCommitteeMembershipData()
 
 export type {
     CommitteeMember,
     CommitteeMembership,
     Committee,
     SubCommittee,
-}
-
-export {
-    getMembers,
-    getCommitteeMembership
 }

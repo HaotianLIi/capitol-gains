@@ -22,8 +22,7 @@ const subCommitteeSchema = z.object({
 const committeeSchema =  z.object({
     thomas_id: z.string(),
     name: z.string(),
-    // type: z.enum(["house", "senate"]),
-    type: z.string(), //TODO: this should be narrowed to just either house or senate
+    type: z.enum(["house", "senate", "joint"]),
     url: z.url().optional(),
     minority_url: z.string().optional(),
     house_committee_id: z.string().optional(),

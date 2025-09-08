@@ -37,18 +37,18 @@ export function getCommitteeMemberships(bioguideId: string) : Committee[] {
  */
 export function getCommitteeMembershipsMany(...bioguideIds: string[]) : Record<string, Committee[]> {
     const result = listToRecord(bioguideIds)
-    Object.entries(result).forEach(([ k, _ ]) => result[k] = getCommitteeMemberships(k))
+    Object.keys(result).forEach(k => result[k] = getCommitteeMemberships(k))
 
     return result as Record<string, Committee[]>
 }
 
 export function getLegislators(p : Party) : Legislator[] {
-    const getLastTerm : (ts : Term[]) => Term  = ts => {
+    const findLastTerm : (ts : Term[]) => Term  = ts => {
         const now = new Date(Date.now())
-        return ts.find(x => x.end > now)!!
+        return ts.find(x => x.end >= now)!!
     }
 
-    return legislatorData.filter(x => getLastTerm(x.terms).party === p)
+    return legislatorData.filter(x => findLastTerm(x.terms).party === p)
 }
 
 // helpers

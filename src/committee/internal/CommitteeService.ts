@@ -35,6 +35,22 @@ const committeeSchema =  z.object({
     subcommittees: z.array(subCommitteeSchema).optional()
 })
 
+const legislatorTermSchema = z.object({
+    type: z.string(),
+    start: z.coerce.date(),
+    end: z.coerce.date(),
+    state: z.string().length(2),
+    district: z.number().int().optional(),
+    party: z.string(),
+    state_rank: z.string().optional(),
+    url: z.url().optional(),
+    address: z.string().optional(),
+    phone: z.string().optional(),
+    fax: z.string().nullable().optional(),
+    contact_form: z.string().optional(),
+    office: z.string().optional(),
+})
+
 const legislatorSchema = z.object({
     id: z.object({
         bioguide: z.string(),
@@ -55,21 +71,7 @@ const legislatorSchema = z.object({
         birthDay: z.date().optional(),
         gender: z.enum(["M", "F"]),
     }),
-    terms: z.object({
-        type: z.string(),
-        start: z.coerce.date(),
-        end: z.coerce.date(),
-        state: z.string().length(2),
-        district: z.number().int().optional(),
-        party: z.string(),
-        state_rank: z.string().optional(),
-        url: z.url().optional(),
-        address: z.string().optional(),
-        phone: z.string().optional(),
-        fax: z.string().nullable().optional(),
-        contact_form: z.string().optional(),
-        office: z.string().optional(),
-    }).array(),
+    terms: legislatorTermSchema.array()
 })
 
 type CommitteeMember = z.infer<typeof committeeMemberSchema>
@@ -77,6 +79,7 @@ type CommitteeMembership = z.infer<typeof committeeMembershipSchema>
 type Committee = z.infer<typeof committeeSchema>
 type SubCommittee = z.infer<typeof subCommitteeSchema>
 type Legislator = z.infer<typeof legislatorSchema>
+type Term = z.infer<typeof legislatorTermSchema>
 
 const COMMITTEE_MEMBERSHIP_CURRENT_PATH = process.cwd() + "/congress-legislators/committee-membership-current.yaml"
 const COMMITTEE_CURRENT_PATH = process.cwd() + "/congress-legislators/committees-current.yaml"
@@ -121,4 +124,5 @@ export type {
     Committee,
     SubCommittee,
     Legislator,
+    Term,
 }

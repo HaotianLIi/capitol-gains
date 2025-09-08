@@ -1,4 +1,13 @@
-import {type Committee, committeeData, type CommitteeMember, committeeMembershipData} from "./internal/CommitteeService"
+import {
+    type Committee,
+    committeeData,
+    type CommitteeMember,
+    committeeMembershipData,
+    type Legislator,
+    legislatorData,
+    type Term,
+} from "./internal/CommitteeService"
+import type {Party} from "./Party.ts";
 
 /**
  * Return all committee members that belongs to that committee by committeeId (thomasId)
@@ -31,6 +40,15 @@ export function getCommitteeMembershipsMany(...bioguideIds: string[]) : Record<s
     Object.entries(result).forEach(([ k, _ ]) => result[k] = getCommitteeMemberships(k))
 
     return result as Record<string, Committee[]>
+}
+
+export function getLegislators(p : Party) : Legislator[] {
+    const getLastTerm : (ts : Term[]) => Term  = ts => {
+        const now = new Date(Date.now())
+        return ts.find(x => x.end > now)!!
+    }
+
+    return legislatorData.filter(x => getLastTerm(x.terms).party === p)
 }
 
 // helpers

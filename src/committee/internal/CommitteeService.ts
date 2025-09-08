@@ -110,4 +110,5 @@ export type {
     CommitteeMembership,
     Committee,
     SubCommittee,
+    Legislator,
 }

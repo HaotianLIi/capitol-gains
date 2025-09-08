@@ -41,6 +41,12 @@ const legislatorTermSchema = z.object({
     state: z.string().length(2),
     district: z.number().int().optional(),
     party: z.string(),
+    party_affiliations: z.object({
+        start: z.coerce.date(),
+        end: z.coerce.date(),
+        party: z.string(),
+    }).array().optional(),
+    caucus: z.string().optional(),
     state_rank: z.string().optional(),
     url: z.url().optional(),
     address: z.string().optional(),

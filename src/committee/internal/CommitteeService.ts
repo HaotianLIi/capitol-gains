@@ -35,7 +35,7 @@ const committeeSchema =  z.object({
 })
 
 const legislatorTermSchema = z.object({
-    type: z.string(),
+    type: z.enum(["rep", "sen"]),
     start: z.coerce.date(),
     end: z.coerce.date(),
     state: z.string().length(2),

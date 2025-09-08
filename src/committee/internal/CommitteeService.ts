@@ -105,6 +105,16 @@ export const committeeData = await getCommitteeData()
 export const committeeMembershipData = await getCommitteeMembershipData()
 export const legislatorData = await getLegislatorData()
 
+export function toLegislator(cm : CommitteeMember) : Legislator | undefined {
+    return legislatorData.find(x => x.id.bioguide === cm.bioguide)
+}
+
+export function toCommitteeMember(l : Legislator) : CommitteeMember | undefined {
+    return Object.values(committeeMembershipData)
+        .flatMap(x => x)
+        .find(x => x.bioguide === l.id.bioguide)
+}
+
 export type {
     CommitteeMember,
     CommitteeMembership,

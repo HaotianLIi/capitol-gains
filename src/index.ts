@@ -1,21 +1,9 @@
 import axios from 'axios';
-interface CongressTrade {
-  Representativ: string;
-  BioGuideID: string;
-  ReportDate: string;
-  TransactionDate: string;
-  Tikcer: string;
-  Transaction: string;
-  Range: string;
-  House: string;
-  Party: string;
-}
 
 const API_KEY = Bun.env.QUIVER_API_KEY;
 if (!API_KEY) {
   console.error("API KEY NOT FOUND");
 }
-
 const config = {
   headers: {
     'Accept': 'application/json',
@@ -59,3 +47,28 @@ async function fetchCongressTrades() {
   }
 }
 await fetchCongressTrades();
+
+// descriptive types
+type PoliticalParty = "R" | "D" | "I"; // Republican, Democrat, Independent
+type Chamber = "Representatives" | "Senate";
+type TransactionType = "Purchase" | "Sale";
+
+interface CongressTrade {
+  Representative: string;
+  BioGuideID: string;
+  ReportDate: string; // When the report was filed
+  TransactionDate: string; // When the trade actually happened
+  Ticker: string;
+  Transaction: TransactionType;
+  Range: string;
+  House: Chamber;
+  Amount: string;
+  Party: PoliticalParty;
+  last_modified: string;
+  TickerType: string;
+  Description: string | null;
+  ExcessReturn: number; // Performance metric vs market
+  PriceChange: number; // Price changed since trade
+  SPYChange: number; // S&P 500 changed since trade
+}
+

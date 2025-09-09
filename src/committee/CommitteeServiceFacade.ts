@@ -44,11 +44,11 @@ export function getCommitteeMembershipsMany(...bioguideIds: string[]) : Record<s
 }
 
 export function getLegislatorsByParty(p : Party) : Legislator[] {
-    return legislatorData.filter(x => findLastTerm(x.terms).party === p)
+    return legislatorData.filter(x => findCurrentTerm(x.terms).party === p)
 }
 
 export function getLegislatorsByChamber(c : "House" | "Senate") : Legislator[] {
-    return legislatorData.filter(x => findLastTerm(x.terms).type === toLegislatorType(c))
+    return legislatorData.filter(x => findCurrentTerm(x.terms).type === toLegislatorType(c))
 }
 
 // helpers
@@ -60,7 +60,7 @@ function listToRecord(ls: string[]) : Record<string, unknown>{
     return result
 }
 
-function findLastTerm(ts : Term[]) : Term {
+function findCurrentTerm(ts : Term[]) : Term {
     const now = new Date(Date.now())
-    return ts.find(x => x.end >= now)!!
+    return ts.find(x => x.start <= now && x.end >= now)!!
 }

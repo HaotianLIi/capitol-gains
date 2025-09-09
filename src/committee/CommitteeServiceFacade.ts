@@ -1,4 +1,14 @@
-import {type Committee, committeeData, type CommitteeMember, committeeMembershipData} from "./internal/CommitteeService"
+import {
+    type Committee,
+    committeeData,
+    type CommitteeMember,
+    committeeMembershipData,
+    type Legislator,
+    legislatorData,
+    type Term,
+} from "./internal/CommitteeService"
+import type {Party} from "./Party.ts";
+import {toLegislatorType} from "./Chamber.ts";
 
 /**
  * Return all committee members that belongs to that committee by committeeId (thomasId)
@@ -28,9 +38,17 @@ export function getCommitteeMemberships(bioguideId: string) : Committee[] {
  */
 export function getCommitteeMembershipsMany(...bioguideIds: string[]) : Record<string, Committee[]> {
     const result = listToRecord(bioguideIds)
-    Object.entries(result).forEach(([ k, _ ]) => result[k] = getCommitteeMemberships(k))
+    Object.keys(result).forEach(k => result[k] = getCommitteeMemberships(k))
 
     return result as Record<string, Committee[]>
+}
+
+export function getLegislatorsByParty(p : Party) : Legislator[] {
+    return legislatorData.filter(x => findLastTerm(x.terms).party === p)
+}
+
+export function getLegislatorsByChamber(c : "House" | "Senate") : Legislator[] {
+    return legislatorData.filter(x => findLastTerm(x.terms).type === toLegislatorType(c))
 }
 
 // helpers
@@ -40,4 +58,9 @@ function listToRecord(ls: string[]) : Record<string, unknown>{
         result[e] = undefined
     }
     return result
+}
+
+function findLastTerm(ts : Term[]) : Term {
+    const now = new Date(Date.now())
+    return ts.find(x => x.end >= now)!!
 }

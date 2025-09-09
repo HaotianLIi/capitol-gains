@@ -1,0 +1,1 @@
+export type Party = "Republican" | "Democrats" | "Independent"

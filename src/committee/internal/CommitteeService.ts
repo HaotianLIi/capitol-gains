@@ -111,6 +111,22 @@ async function getLegislatorData(): Promise<Legislator[]> {
 export const committeeData = await getCommitteeData()
 export const committeeMembershipData = await getCommitteeMembershipData()
 export const legislatorData = await getLegislatorData()
+export const bioGuideToThomasIdMap = makeBioguideIdToThomasIdsMap()
+
+// MAD FOR IMPERATIVE FOR LOOP OPTIMIZATION
+function makeBioguideIdToThomasIdsMap(){
+  const result : Record<string, string[]> = {}
+  const entries = Object.entries(committeeMembershipData)
+  for (let i = 0; i < entries.length; i++) {
+    const [thomasId, members] = entries[i]!!
+
+    for (let j = 0; j < members.length; j++) {
+      const member = members[j]!!
+      result[member.bioguide] = (result[member.bioguide] ?? []).concat(thomasId)
+    }
+  }
+  return result
+}
 
 export function toLegislator(cm: CommitteeMember): Legislator | undefined {
   return legislatorData.find(x => x.id.bioguide === cm.bioguide)

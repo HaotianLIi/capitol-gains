@@ -18,6 +18,7 @@ const subCommitteeSchema = z.object({
   address: z.string().optional(),
   phone: z.string().optional(),
 })
+
 const committeeSchema = z.object({
   thomas_id: z.string(),
   name: z.string(),
@@ -128,5 +129,5 @@ export type {
   Committee,
   SubCommittee,
   Legislator,
-  Term
+  Term,
 }

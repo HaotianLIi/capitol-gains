@@ -1,25 +1,28 @@
-import { z } from 'zod';
+import * as z from "zod";
 
-export type PoliticalParty = "R" | "D" | "I"; // Republican, Democrat, Independent
-export type Chamber = "Representatives" | "Senate";
-export type TransactionType = "Purchase" | "Sale";
+export const PoliticalPartySchema = z.enum(["R", "D", "I"]); // Republican, Democrat, Independent
+export const ChamberSchema = z.enum(["Representatives", "Senate"]);
+export const TransactionTypeSchema = z.enum(["Purchase", "Sale"]);
 
-export interface CongressTrade {
-  Representative: string;
-  BioGuideID: string;
-  ReportDate: string; // When the report was filed
-  TransactionDate: string; // When the trade actually happened
-  Ticker: string;
-  Transaction: TransactionType;
-  Range: string;
-  House: Chamber;
-  Amount: string;
-  Party: PoliticalParty;
-  last_modified: string;
-  TickerType: string;
-  Description: string | null;
-  ExcessReturn: number; // Performance metric vs market
-  PriceChange: number; // Price changed since trade
-  SPYChange: number; // S&P 500 changed since trade
-}
+export const CongressTradeSchema = z.object({
+  Representative: z.string(),
+  BioGuideID: z.string(),
+  ReportDate: z.string(), // When the report was filed
+  TransactionDate: z.string(), // When the trade actually happened
+  Ticker: z.string(),
+  Transaction: TransactionTypeSchema,
+  Range: z.string(),
+  House: ChamberSchema,
+  Amount: z.string(),
+  Party: PoliticalPartySchema,
+  last_modified: z.string(),
+  TickerType: z.string(),
+  Description: z.string().nullable(),
+  ExcessReturn: z.number(), // Performance metric vs market
+  PriceChange: z.number(), // Price changed since trade
+  SPYChange: z.number(), // S&P 500 changed since trade
+});
+
+export type CongressTrade = z.infer<typeof CongressTradeSchema>;
+export const validCongressTrade = CongressTradeSchema.parse(undefined)
 

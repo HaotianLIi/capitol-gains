@@ -1,3 +1,14 @@
+import { getCongressTradeData } from "./quiver/daily-trades";
+
+async function main() {
+  console.log("Testing")
+  const data = await getCongressTradeData()
+
+  console.log("CongressTradeData: ", data)
+}
+
+await main();
+
 // API request
 // async function fetchCongressTrades() {
 //   try {
@@ -34,12 +45,3 @@
 //   }
 // }
 // await fetchCongressTrades();
-
-import { getCongressTradeData } from "./quiver/daily-trades";
-
-//
-async function main() {
-  const data = getCongressTradeData()
-
-  console.log("CongressTradeData: ", data)
-}

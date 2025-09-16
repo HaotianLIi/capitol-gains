@@ -5,7 +5,7 @@ const committeeMemberSchema = z.object({
   bioguide: z.string(),
   rank: z.number().int(),
   party: z.enum(["majority", "minority"]),
-  title: z.string().optional()
+  title: z.string().optional(),
 })
 
 const committeeMembershipSchema = z.record(

@@ -1,10 +1,12 @@
-import { getCongressTradeData } from "./quiver/daily-trades";
+import { getTextOfJSDocComment } from "typescript";
+import { getCongressTradeData } from "./quiver/trade/congressTrade.ts";
+import { getLastMonthTrade } from "./quiver/trade/congressTrade.ts";
 
 async function main() {
-  console.log("Testing")
-  const data = await getCongressTradeData()
-
-  console.log("CongressTradeData: ", data)
+  const get_all_trade = await getCongressTradeData();
+  const last_month_trade = await getLastMonthTrade();
+  // console.log("CongressTradeData: ", get_all_trade);
+  console.log("Last Month's Trade: ", last_month_trade)
 }
 
 await main();

@@ -57,6 +57,7 @@ function listToRecord(ls: string[]) : Record<string, unknown>{
     for (let e of ls){
         result[e] = undefined
     }
+
     return result
 }
 

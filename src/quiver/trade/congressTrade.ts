@@ -37,3 +37,4 @@ export async function getLastMonthTrade() {
   return getTradeMonth(allTrade, lastMonth);
 }
 
+

@@ -1,10 +1,10 @@
-import { all } from "axios";
-import { getCongressTradeData } from "./quiver/trade/congressTrade.ts";
-import { getTradeByMonth } from "./quiver/trade/congressTrade.ts";
+import { testDateFilter } from "./quiver/trade/congressTradeTest";
+
 async function main() {
-  const allTrades = await getCongressTradeData();
-  const date = "2025-08";
-  return getTradeByMonth(allTrades, date);
+  if (process.argv.includes('--testDate')) {
+    await testDateFilter();
+    return;
+  }
 }
 // Test samples
 // Representative: "Lisa Mcclain"

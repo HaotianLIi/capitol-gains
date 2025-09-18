@@ -5,6 +5,10 @@ export async function getCongressTradeData(): Promise<CongressTrade[]> {
   const response = await fetch(ENDPOINTS.CONGRESS_TRADING, {
     headers: QUIVER_CONFIG.headers
   })
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}, ${response.statusText}`)
+  }
+
   const rawData = await response.json();
   // Find invalid transaction values
   if (Array.isArray(rawData)) {
@@ -23,27 +27,11 @@ export async function getCongressTradeData(): Promise<CongressTrade[]> {
   const parsedData = CongressTradeArraySchema.parse(rawData);
   return parsedData;
 }
-await getCongressTradeData();
 
-export async function filterTradeData(trades: CongressTrade[], input: string): Promise<CongressTrade[]> {
-  return trades.filter(trade => trade.TransactionDate.startsWith(input));
+export async function filterTradeByTransDate(
+  trades: CongressTrade[],
+  datePrefix: string
+): Promise<CongressTrade[]> {
+  return trades.filter(trade => trade.TransactionDate.startsWith(datePrefix));
 }
-// export async function getTradeByTransactionDate(trades: CongressTrade[], transactionDate: string): Promise<CongressTrade[]> {
-//   return trades.filter(trade => trade.TransactionDate.startsWith(transactionDate));
-// }
-// export async function getTradeByHouse(trades: CongressTrade[], house: string): Promise<CongressTrade[]> {
-//   return trades.filter(trade => trade.House.startsWith(house));
-// }
-// export async function getTradeByTicker(trades: CongressTrade[], ticker: string): Promise<CongressTrade[]> {
-//   return trades.filter(trade => trade.Ticker.startsWith(ticker));
-// }
-// export async function getTradeByMonth(trades: CongressTrade[], yearMonth: string): Promise<CongressTrade[]> {
-//   return trades.filter(trade => trade.TransactionDate.startsWith(yearMonth));
-// }
-// export async function getTradeByBioGuideID(trades: CongressTrade[], bioId: string): Promise<CongressTrade[]> {
-//   return trades.filter(trade => trade.BioGuideID.startsWith(bioId));
-// }
-export async function getTradeByMonth(allTrade: CongressTrade[], yearMonth: string) {
-  console.log(allTrade.length, yearMonth)
-  return filterTradeData(allTrade, yearMonth);
-}
+

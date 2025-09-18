@@ -1,13 +1,21 @@
-import { getTextOfJSDocComment } from "typescript";
+import { all } from "axios";
 import { getCongressTradeData } from "./quiver/trade/congressTrade.ts";
-import { getLastMonthTrade } from "./quiver/trade/congressTrade.ts";
-
+import { getTradeByMonth } from "./quiver/trade/congressTrade.ts";
 async function main() {
-  const get_all_trade = await getCongressTradeData();
-  const last_month_trade = await getLastMonthTrade();
-  // console.log("CongressTradeData: ", get_all_trade);
-  console.log("Last Month's Trade: ", last_month_trade)
+  const allTrades = await getCongressTradeData();
+  const date = "2025-08";
+  return getTradeByMonth(allTrades, date);
 }
+// Test samples
+// Representative: "Lisa Mcclain"
+// BioGuideID: "M001136"
+// TransactionDate: "2025-08-13"
+// Ticker: "FCX"
+// Transaction: "Purchase"
+// Range: "$1001 - $15000"
+// House "Representatives"
+// last_modified: "2025-09-15"
+// TickerType: "ST"
 
 await main();
 

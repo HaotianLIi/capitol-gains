@@ -19,22 +19,31 @@ export async function getCongressTradeData(): Promise<CongressTrade[]> {
     if (invalidTransactions.length > 0) {
       console.log("Found invalid transaction values: ", invalidTransactions)
     }
-    console.log("Good Good")
   }
   const parsedData = CongressTradeArraySchema.parse(rawData);
   return parsedData;
 }
+await getCongressTradeData();
 
-export async function getTradeMonth(trades: CongressTrade[], yearMonth: string): Promise<CongressTrade[]> {
-  return trades.filter(trade => trade.TransactionDate.startsWith(yearMonth));
+export async function filterTradeData(trades: CongressTrade[], input: string): Promise<CongressTrade[]> {
+  return trades.filter(trade => trade.TransactionDate.startsWith(input));
 }
-
-export async function getLastMonthTrade() {
-  const allTrade = await getCongressTradeData();
-  const now = new Date();
-  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString().slice(0, 7); // YYYY-MM
-  console.log("Last Month: ", lastMonth)
-  return getTradeMonth(allTrade, lastMonth);
+// export async function getTradeByTransactionDate(trades: CongressTrade[], transactionDate: string): Promise<CongressTrade[]> {
+//   return trades.filter(trade => trade.TransactionDate.startsWith(transactionDate));
+// }
+// export async function getTradeByHouse(trades: CongressTrade[], house: string): Promise<CongressTrade[]> {
+//   return trades.filter(trade => trade.House.startsWith(house));
+// }
+// export async function getTradeByTicker(trades: CongressTrade[], ticker: string): Promise<CongressTrade[]> {
+//   return trades.filter(trade => trade.Ticker.startsWith(ticker));
+// }
+// export async function getTradeByMonth(trades: CongressTrade[], yearMonth: string): Promise<CongressTrade[]> {
+//   return trades.filter(trade => trade.TransactionDate.startsWith(yearMonth));
+// }
+// export async function getTradeByBioGuideID(trades: CongressTrade[], bioId: string): Promise<CongressTrade[]> {
+//   return trades.filter(trade => trade.BioGuideID.startsWith(bioId));
+// }
+export async function getTradeByMonth(allTrade: CongressTrade[], yearMonth: string) {
+  console.log(allTrade.length, yearMonth)
+  return filterTradeData(allTrade, yearMonth);
 }
-
-

@@ -1,8 +1,8 @@
-import { testDateFilter } from "./quiver/trade/congressTradeTest";
+import { testGetTradeByDate } from "./quiver/trade/congressTradeTest";
 
 async function main() {
-  if (process.argv.includes('--testDate')) {
-    await testDateFilter();
+  if (process.argv.includes('--test')) {
+    await testGetTradeByDate();
     return;
   }
 }
@@ -34,7 +34,7 @@ await main();
 //     console.log("-----------------------------------");
 //     // Get first 5
 //     const firstFiveTrades = response.data.slice(0, 50);
-//     // Loop through each trade and print it
+//     // L33p through each trade and print it
 //     firstFiveTrades.forEach((trade, index) => {
 //       console.log(`Trade #${index + 1}:`);
 //       console.log(trade);

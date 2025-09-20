@@ -23,5 +23,17 @@ export const CongressTradeSchema = z.object({
 });
 
 export const CongressTradeArraySchema = z.array(CongressTradeSchema);
-
 export type CongressTrade = z.infer<typeof CongressTradeSchema>;
+
+export const CongressTradeFilterSchema = z.object({
+  Representative: z.string().optional,
+  Ticker: z.string().optional,
+  BioGuideID: z.string().optional,
+  ReportDate: z.string().optional,
+  TransactionDate: TransactionTypeSchema.optional,
+  house: z.string().optional(),
+  ExcessReturn: z.number().optional()
+})
+
+export type TradeFilters = z.infer<typeof CongressTradeFilterSchema>;
+

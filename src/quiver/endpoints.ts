@@ -16,7 +16,7 @@ export const ENDPOINTS = {
   congressTradingByTicket: (ticker: string) =>
     `https://api.quiverquant.com/beta/historical/congresstrading/${ticker}`,
   congressTradingByBioId: (bioGuideId: string) =>
-    `https://api.quiverquant.com/beta/bulk/congresstrading?=bioguide_id=${bioGuideId}`
+    `https://api.quiverquant.com/beta/bulk/congresstrading?bioguide_id=${bioGuideId}`
 }
 
 

@@ -7,9 +7,22 @@ export async function getCongressTradeByDefault() {
   const response = await fetch(url, { headers: QUIVER_CONFIG.headers })
   const defaultData = await response.json() as CongressTrade[];
 
+  console.log(defaultData);
   console.log(`${defaultData.length} trade has been fetched`)
 
   return defaultData
+}
+
+export async function getCongressTradeByBioGuideId(bioGuideId: string) {
+  const url = ENDPOINTS.congressTradingByBioId(bioGuideId);
+  const response = await fetch(url, { headers: QUIVER_CONFIG.headers })
+  const data = await response.json() as CongressTrade[];
+
+  console.log("Trade data: ", JSON.stringify(data, null, 2));
+
+  // console.log(`Trade of \n ${data}`);
+  console.log(`Get ${data.length} trades of bioGuideId: ${bioGuideId}`);
+  return data;
 }
 
 export async function getCongressTradeByPageSize(pageSize: number) {

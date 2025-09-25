@@ -4,6 +4,13 @@ export const mockFilterTrades = [
   {
     name: "Single filter - AAPL ticker",
     filters: {
+      ticker: "AAPL",
+      bioGuideID: "T000490"
+    }
+  },
+  {
+    name: "Single filter - AAPL ticker",
+    filters: {
       ticker: "AAPL"
     },
   },

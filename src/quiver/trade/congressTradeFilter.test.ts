@@ -1,9 +1,9 @@
 import { describe, test, expect } from 'bun:test';
 import { filterTrades, validateFilters } from './congressTradeFilter';
 import { mockFilterTrades } from './mockData.ts';
-import { getCongressTradeData } from './congressTrade.ts';
+import { getCongressTradeByDefault } from './congressTrade.ts';
 
-export const allTrade = await getCongressTradeData();
+export const allTrade = await getCongressTradeByDefault();
 
 describe("FilterTrades - one to many scenarios", () => {
   mockFilterTrades.forEach(testCase => {

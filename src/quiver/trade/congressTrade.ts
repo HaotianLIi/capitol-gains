@@ -1,42 +1,31 @@
 import { CongressTradeArraySchema, type CongressTrade } from "../types";
 import { QUIVER_CONFIG, ENDPOINTS } from "../api_client";
-import { resolve } from "bun";
 
 
-export async function verifyPagination() {
+export async function verifyPagePrams(pageSize: number) {
   console.log('Testing pagination with different page sizses')
 
-  const testSizes = [10000];
   const allData: CongressTrade[] = [];
-  for (const pageSize of testSizes) {
-    const url = `https://api.quiverquant.com/beta/bulk/congresstrading?=page=1&page_size=${pageSize}&version=V2`;
-    try {
+  const url = `https://api.quiverquant.com/beta/bulk/congresstrading?=page=1&page_size=${pageSize}&version=V2`;
+  try {
+    const response = await fetch(url, { headers: QUIVER_CONFIG.headers });
+    const data = await response.json() as CongressTrade[];
+    console.log(`PageSize: ${pageSize} -> Received: ${data.length} items`);
+    allData.push(...data);
 
-      const response = await fetch(url, { headers: QUIVER_CONFIG.headers });
-      const data = await response.json() as CongressTrade[];
-      console.log(`PageSize: ${pageSize} -> Received: ${data.length} items`);
-
-      allData.push(...data);
-
-      //Save to file for inspection
-      const fs = require('fs');
-      fs.writeFileSync(`page_${pageSize}_data_V2.txt`,
-        `Version: V2 PageSize: ${pageSize}\nItems: ${data.length}\n\n${JSON.stringify(data, null, 2)}`
-      );
-      await new Promise(resolve => setTimeout(resolve, 200));
-    } catch (error) {
-      console.log('API error', error);
-    }
-
-    console.log(`\nTotal items across all page sizses: ${allData.length}`);
+    //Save to file for inspection
+    const fs = require('fs');
+    fs.writeFileSync(`page_${pageSize}_data_V2.txt`,
+      `Version: V2 PageSize: ${pageSize}\nItems: ${data.length}\n\n${JSON.stringify(data, null, 2)}`
+    );
+  } catch (error) {
+    console.log('API error', error);
   }
-
 }
-await verifyPagination();
 
 
 export async function getCongressTradeData(): Promise<CongressTrade[]> {
-  const url = ENDPOINTS.congressTrading();
+  const url = ENDPOINTS.congressTradingBySize(2);
   const response = await fetch(url, {
     headers: QUIVER_CONFIG.headers
   })
@@ -60,6 +49,7 @@ export async function getCongressTradeData(): Promise<CongressTrade[]> {
     }
   }
   const parsedData = CongressTradeArraySchema.parse(rawData);
+  console.log(`There are ${parsedData.length} of trades disdplayed`);
   return parsedData;
 }
 

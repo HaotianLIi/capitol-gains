@@ -3,15 +3,16 @@ if (!API_KEY) throw new Error("QUIVER_API_KEY not found");
 
 export const QUIVER_CONFIG = {
   headers: {
-    'Accept': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${API_KEY}`
   }
 }
 
 export const ENDPOINTS = {
-  CONGRESS_TRADING: 'https://api.quiverquant.com/beta/live/congresstrading',
-  BULK_TRADING: 'https://api.quiverquant.com/beta/bulk/congresstrading'
-
+  congressTradingByTicket: (ticker: string) =>
+    `https://api.quiverquant.com/beta/historical/congresstrading/${ticker}`,
+  congressTradingBySize: (pageSize: number) =>
+    `https://api.quiverquant.com/beta/bulk/congresstrading?=page=1&page_size=${pageSize}&version=V2`,
 }
 
 

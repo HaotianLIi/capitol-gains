@@ -45,3 +45,5 @@ export const CongressTradeFilterSchema = z.object({
 
 export type TradeFilters = z.infer<typeof CongressTradeFilterSchema>;
 
+
+

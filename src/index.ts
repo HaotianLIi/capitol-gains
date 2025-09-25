@@ -1,8 +1,13 @@
-import { testGetTradeByDate } from "./quiver/trade/congressTradeTest";
+import { getCongressTradeData } from "./quiver/trade/congressTrade";
+import { testAllCases, testGetTradeByDate, testGetTradeByTransactionType } from "./quiver/trade/congressTradeFilter.test";
+
+export const allTrades = await getCongressTradeData();
 
 async function main() {
+
   if (process.argv.includes('--test')) {
-    await testGetTradeByDate();
+    await testAllCases();
+    // await testGetTradeByTransactionType();
     return;
   }
 }

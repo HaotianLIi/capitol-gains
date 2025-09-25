@@ -1,9 +1,16 @@
 import * as z from "zod";
 
-export const PoliticalPartySchema = z.enum(["R", "D", "I"]); //Republican, Democrat, Independent
+export const PoliticalParty = z.enum(["R", "D", "I"]); //Republican, Democrat, Independent
 export const ChamberSchema = z.enum(["Representatives", "Senate"]);
-export const TransactionTypeSchema = z.enum(["Purchase", "Sale", "Sale (Partial)", "Sale (Full)", "Exchange"]);
+export const TransactionTypeEnum = z.enum(["Purchase", "Sale", "Sale (Partial)", "Sale (Full)", "Exchange"]);
 
+export enum TransactionType {
+  purchase = "Purchase",
+  sale = "Sale",
+  sale_partial = "Sale (Partial)",
+  sale_full = "Sale (Full)",
+  exchange = "Exchange"
+}
 // Development Schema (Strict)
 export const CongressTradeSchema = z.object({
   Representative: z.string(),
@@ -11,7 +18,7 @@ export const CongressTradeSchema = z.object({
   ReportDate: z.string(),
   TransactionDate: z.string(),
   Ticker: z.string(),
-  Transaction: TransactionTypeSchema,
+  Transaction: TransactionTypeEnum,
   Range: z.string(),
   House: ChamberSchema,
   last_modified: z.string(),
@@ -30,9 +37,10 @@ export const CongressTradeFilterSchema = z.object({
   ticker: z.string().optional(),
   bioGuideID: z.string().optional(),
   reportDate: z.string().optional(),
-  transactionDate: TransactionTypeSchema.optional(),
+  transactionDate: z.string().optional(),
   house: z.string().optional(),
-  excessReturn: z.number().optional()
+  excessReturn: z.number().optional(),
+  transaction: TransactionTypeEnum.optional()
 })
 
 export type TradeFilters = z.infer<typeof CongressTradeFilterSchema>;

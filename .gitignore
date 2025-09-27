@@ -42,3 +42,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Finder (MacOS) folder config
 .DS_Store
+page_10000_data_V1.txt
+page_10000_data_V2.txt
